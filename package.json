@@ -1,0 +1,41 @@
+{
+  "name": "crime-file-management-system",
+  "version": "1.0.0",
+  "description": "A comprehensive Crime File Management System with GIS Maps, Analytics, and Modern UI",
+  "main": "index.html",
+  "scripts": {
+    "start": "http-server -p 8000 -o",
+    "serve": "http-server -p 8000",
+    "dev": "live-server --port=8000 --open=/",
+    "build": "echo 'No build step required for static files'",
+    "deploy:netlify": "netlify deploy --prod",
+    "deploy:vercel": "vercel --prod",
+    "deploy:github": "echo 'Push to GitHub and enable Pages in settings'"
+  },
+  "keywords": [
+    "crime-management",
+    "gis-maps",
+    "analytics",
+    "law-enforcement",
+    "case-management",
+    "leaflet",
+    "chartjs",
+    "javascript",
+    "html5",
+    "css3"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/crime-management-system.git"
+  },
+  "homepage": "https://yourusername.github.io/crime-management-system",
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "live-server": "^1.2.2"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+} 

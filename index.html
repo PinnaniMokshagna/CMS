@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crime File Management System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1><i class="fas fa-shield-alt"></i> Crime File Management System</h1>
+                <div class="header-actions">
+                    <button id="addCrimeBtn" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Add Crime Record
+                    </button>
+                    <button id="exportBtn" class="btn btn-secondary">
+                        <i class="fas fa-download"></i> Export Data
+                    </button>
+                    <input type="file" id="importFile" accept=".json" style="display: none;">
+                    <button id="importBtn" class="btn btn-secondary">
+                        <i class="fas fa-upload"></i> Import Data
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="search-section">
+                    <h3><i class="fas fa-search"></i> Search & Filter</h3>
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="Search crimes...">
+                        <i class="fas fa-search search-icon"></i>
+                    </div>
+                    
+                    <div class="filter-section">
+                        <h4>Filters</h4>
+                        <div class="filter-group">
+                            <label>Crime Type:</label>
+                            <select id="crimeTypeFilter">
+                                <option value="">All Types</option>
+                                <option value="Theft">Theft</option>
+                                <option value="Assault">Assault</option>
+                                <option value="Burglary">Burglary</option>
+                                <option value="Vandalism">Vandalism</option>
+                                <option value="Fraud">Fraud</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label>Date Range:</label>
+                            <input type="date" id="startDateFilter">
+                            <input type="date" id="endDateFilter">
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label>Status:</label>
+                            <select id="statusFilter">
+                                <option value="">All Status</option>
+                                <option value="Open">Open</option>
+                                <option value="Under Investigation">Under Investigation</option>
+                                <option value="Closed">Closed</option>
+                                <option value="Solved">Solved</option>
+                            </select>
+                        </div>
+                        
+                        <button id="clearFiltersBtn" class="btn btn-outline">Clear Filters</button>
+                    </div>
+                </div>
+
+                <div class="stats-section">
+                    <h3><i class="fas fa-chart-bar"></i> Statistics</h3>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalCrimes">0</div>
+                        <div class="stat-label">Total Crimes</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="openCases">0</div>
+                        <div class="stat-label">Open Cases</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="solvedCases">0</div>
+                        <div class="stat-label">Solved Cases</div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Area -->
+            <div class="main-area">
+                <!-- Tabs -->
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="list">
+                        <i class="fas fa-list"></i> Crime List
+                    </button>
+                    <button class="tab-btn" data-tab="map">
+                        <i class="fas fa-map-marked-alt"></i> GIS Map
+                    </button>
+                    <button class="tab-btn" data-tab="analytics">
+                        <i class="fas fa-chart-line"></i> Analytics
+                    </button>
+                </div>
+
+                <!-- Tab Content -->
+                <div class="tab-content">
+                    <!-- Crime List Tab -->
+                    <div id="list-tab" class="tab-pane active">
+                        <div class="crime-list" id="crimeList">
+                            <!-- Crime records will be dynamically added here -->
+                        </div>
+                    </div>
+
+                    <!-- Map Tab -->
+                    <div id="map-tab" class="tab-pane">
+                        <div id="map" class="map-container"></div>
+                    </div>
+
+                    <!-- Analytics Tab -->
+                    <div id="analytics-tab" class="tab-pane">
+                        <div class="analytics-grid">
+                            <div class="chart-container">
+                                <h3>Crime Types Distribution</h3>
+                                <canvas id="crimeTypeChart"></canvas>
+                            </div>
+                            <div class="chart-container">
+                                <h3>Monthly Crime Trends</h3>
+                                <canvas id="monthlyTrendChart"></canvas>
+                            </div>
+                            <div class="chart-container">
+                                <h3>Status Distribution</h3>
+                                <canvas id="statusChart"></canvas>
+                            </div>
+                            <div class="chart-container">
+                                <h3>Geographic Distribution</h3>
+                                <canvas id="geographicChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Crime Modal -->
+    <div id="crimeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Add New Crime Record</h2>
+                <button class="close-btn" id="closeModal">&times;</button>
+            </div>
+            <form id="crimeForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="crimeTitle">Crime Title *</label>
+                        <input type="text" id="crimeTitle" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="crimeType">Crime Type *</label>
+                        <select id="crimeType" required>
+                            <option value="">Select Type</option>
+                            <option value="Theft">Theft</option>
+                            <option value="Assault">Assault</option>
+                            <option value="Burglary">Burglary</option>
+                            <option value="Vandalism">Vandalism</option>
+                            <option value="Fraud">Fraud</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="crimeDate">Date & Time *</label>
+                        <input type="datetime-local" id="crimeDate" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="crimeStatus">Status *</label>
+                        <select id="crimeStatus" required>
+                            <option value="">Select Status</option>
+                            <option value="Open">Open</option>
+                            <option value="Under Investigation">Under Investigation</option>
+                            <option value="Closed">Closed</option>
+                            <option value="Solved">Solved</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="crimeLocation">Location *</label>
+                        <input type="text" id="crimeLocation" placeholder="Enter address or coordinates" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="latitude">Latitude</label>
+                        <input type="number" id="latitude" step="any" placeholder="e.g., 40.7128">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="longitude">Longitude</label>
+                        <input type="number" id="longitude" step="any" placeholder="e.g., -74.0060">
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="crimeDescription">Description</label>
+                        <textarea id="crimeDescription" rows="4" placeholder="Provide detailed description of the crime..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="victimName">Victim Name</label>
+                        <input type="text" id="victimName">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="suspectName">Suspect Name</label>
+                        <input type="text" id="suspectName">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="officerName">Investigating Officer</label>
+                        <input type="text" id="officerName">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="caseNumber">Case Number</label>
+                        <input type="text" id="caseNumber">
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" id="cancelBtn" class="btn btn-secondary">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Record</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- View Crime Details Modal -->
+    <div id="viewModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Crime Details</h2>
+                <button class="close-btn" id="closeViewModal">&times;</button>
+            </div>
+            <div id="crimeDetails" class="crime-details">
+                <!-- Crime details will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 
