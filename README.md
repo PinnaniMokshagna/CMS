@@ -2,7 +2,7 @@
 
 A comprehensive web-based crime file management system with integrated GIS mapping capabilities, analytics, and modern user interface.
 
-## 🚀 Features
+## Features
 
 ### Core Functionality
 - **Crime Record Management**: Add, edit, delete, and view crime records
@@ -39,7 +39,7 @@ A comprehensive web-based crime file management system with integrated GIS mappi
 - **Responsive Layout**: Works on desktop, tablet, and mobile devices
 - **Color-coded Elements**: Visual indicators for crime types and status
 
-## 🛠️ Installation
+## Installation
 
 ### Prerequisites
 - Modern web browser (Chrome, Firefox, Safari, Edge)
@@ -59,7 +59,7 @@ Crime/
 └── README.md           # This documentation
 ```
 
-## 📖 Usage Guide
+##Usage Guide
 
 ### Adding a Crime Record
 1. Click the "Add Crime Record" button in the header
@@ -94,7 +94,7 @@ Crime/
 2. **Import Data**: Click "Import Data" to upload previously exported JSON files
 3. Data is automatically saved to browser's local storage
 
-## 🎨 Customization
+## Customization
 
 ### Adding New Crime Types
 1. Edit the crime type options in `index.html` (lines with crime type options)
@@ -111,7 +111,7 @@ Crime/
 2. Update the color scheme by changing CSS custom properties
 3. Adjust responsive breakpoints for different screen sizes
 
-## 🔧 Technical Details
+## Technical Details
 
 ### Technologies Used
 - **HTML5**: Semantic markup and modern web standards
@@ -132,7 +132,7 @@ Crime/
 - Safari 12+
 - Edge 79+
 
-## 📊 Sample Data
+## Sample Data
 
 The system comes pre-loaded with sample crime data including:
 - Armed robbery at a bank
@@ -143,7 +143,7 @@ The system comes pre-loaded with sample crime data including:
 
 Each sample record includes realistic details and coordinates for demonstration purposes.
 
-## 🚨 Security Considerations
+## Security Considerations
 
 ### Data Privacy
 - All data is stored locally in the browser
@@ -156,7 +156,7 @@ Each sample record includes realistic details and coordinates for demonstration 
 - Consider encryption for sensitive crime data
 - Implement proper access controls in production environments
 
-## 🔮 Future Enhancements
+## Future Enhancements
 
 ### Planned Features
 - **User Authentication**: Multi-user support with role-based access
@@ -174,7 +174,7 @@ Each sample record includes realistic details and coordinates for demonstration 
 - **WebGL**: 3D map visualization
 - **Machine Learning**: Crime pattern analysis and prediction
 
-## 🤝 Contributing
+## Contributing
 
 ### Development Setup
 1. Fork the repository
@@ -193,7 +193,7 @@ Each sample record includes realistic details and coordinates for demonstration 
 
 This project is open source and available under the MIT License.
 
-## 🆘 Support
+## Support
 
 ### Common Issues
 1. **Map not loading**: Check internet connection for OpenStreetMap tiles
